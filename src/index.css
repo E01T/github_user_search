@@ -11,3 +11,50 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#pages {
+  display: flex;
+  justify-content: center;
+  margin: 0.5em;
+}
+
+#prev-btn {
+  margin-top: 0.4em;
+}
+
+#next-btn {
+  margin-top: 0.4em;
+}
+
+.form-control-inline {
+  min-width: 0;
+  width: 2.8em;
+  display: inline;
+}
+
+#page-no {
+  margin-right: 0.2em;
+}
+
+#pages-output {
+  visibility: hidden;
+}
+
+/* Pagination break points:
+ * From 1xxx down to 795 current pagination looks good
+ *  
+*/
+
+@media screen and (max-width: 589px) {
+  /* #pages-ul li {
+    display: none !important;
+  } */
+
+  #pages-output {
+    visibility: visible;
+  }
+
+  #pages {
+    justify-content: space-between;
+  }
+}
