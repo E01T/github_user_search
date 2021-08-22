@@ -67,7 +67,7 @@ function PageView({
   users: user_type[]
   children: React.ReactNode
 }) {
-  console.log('PageView')
+  // console.log('PageView')
   const usersProfiles = users.map((user: user_type) => {
     return (
       <div className="card" style={{ maxWidth: '600px' }} key={user.id}>
@@ -311,7 +311,7 @@ const Pagination = ({
   }, [windowWidth])
 
   const noOfPages = calcNoOfPages(total_count, pageNo, windowWidth)
-  console.log('noOfPages', noOfPages)
+  // console.log('noOfPages', noOfPages)
   const indexes = isSequence(noOfPages)
   // console.log('indexes', indexes)
   const newPagesArray = createNewPagesArray(noOfPages, indexes)
@@ -411,7 +411,7 @@ function App() {
     const value = e.currentTarget.value
     setInputValue(value)
   }
-  console.log('users.items', users.items)
+  // console.log('users.items', users.items)
   return (
     <div ref={topRef} className="container-lg" style={{ margin: '0px auto' }}>
       <div className="container-lg">

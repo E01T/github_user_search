@@ -85,7 +85,7 @@ function calcNoOfPages(
     num_of_pages = Math.ceil(total_users / 10) // e.g 853 = 86 pages // 10 users 10 / 10 = 1 // 8 users 8 / 10 = 1 page // one page is the minimum
   }
 
-  console.log('num_of_pages start', num_of_pages)
+  // console.log('num_of_pages start', num_of_pages)
   // if window width is less than 570px we hide the ul element and we show the pagination buttons and input field
 
   // TODO: DRY
