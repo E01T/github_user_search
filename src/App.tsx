@@ -2,7 +2,6 @@ import React, { FormEvent } from 'react'
 import './App.css'
 import { calcNoOfPages, isSequence, createNewPagesArray } from './utils'
 import { Search, ChevronLeft, ChevronRight, Info } from 'react-bootstrap-icons'
-import { exit } from 'process'
 
 type users_type = {
   total_count: number
@@ -205,7 +204,12 @@ function PageNumberInput({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    
+
+    if(isNaN(Number(userInput)) || userInput === '') {
+      setUserInput('')
+      return
+    }
+
     if(last_page < Number(userInput) || Number(userInput) < 1) {
       userInput.trim()
       return;
