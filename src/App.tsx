@@ -2,6 +2,7 @@ import React, { FormEvent } from 'react'
 import './App.css'
 import { calcNoOfPages, isSequence, createNewPagesArray } from './utils'
 import { Search, ChevronLeft, ChevronRight, Info } from 'react-bootstrap-icons'
+import { exit } from 'process'
 
 type users_type = {
   total_count: number
@@ -190,7 +191,9 @@ function NextPage({
 
 function PageNumberInput({
   setPageNo,
+  last_page
 }: {
+  last_page: number,
   setPageNo: (pageNo: number) => void
 }) {
   const [userInput, setUserInput] = React.useState('')
@@ -202,8 +205,14 @@ function PageNumberInput({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setPageNo(parseInt(userInput))
-    setUserInput('')
+    
+    if(last_page < Number(userInput) || Number(userInput) < 1) {
+      userInput.trim()
+      return;
+    } else {
+      setPageNo(parseInt(userInput))
+      setUserInput('')
+    }
   }
 
   return (
@@ -338,7 +347,7 @@ const Pagination = ({
             <ul style={{ display: 'inline', padding: '0 5px' }}>{pages}</ul>
           </div>
         ) : (
-          <PageNumberInput setPageNo={setPageNo} />
+          <PageNumberInput last_page={last_page} setPageNo={setPageNo} />
         )}
 
         <div id="next-page-comp">
