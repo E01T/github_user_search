@@ -8,6 +8,19 @@ function range(from: number, to: number): number[] | [] {
 }
 
 /**
+ * Local function to calculate the number of pages
+ * @param totalUsers:number
+ * @returns
+ */
+function getNumberOfPages(totalUsers: number) {
+  if (totalUsers >= 1000) {
+    return 100 // 100 is the maximum
+  } else {
+    return Math.ceil(totalUsers / 10) // e.g 853 = 86 pages // 10 users 10 / 10 = 1 // 8 users 8 / 10 = 1 page // one page is the minimum
+  }
+}
+
+/**
  * This is an efford to emulate the pagination logic of github search results.
  * For large screens
  * Pagination visual analysis -> Use Cases:
@@ -73,112 +86,105 @@ function range(from: number, to: number): number[] | [] {
 
 // This function will return and array of numbers that will represent the page numbers or empty array
 function calcNoOfPages(
-  total_users: number,
-  current_page: number,
-  window_width: number
+  totalUsers: number,
+  currentPage: number,
+  windowWidth: number
 ): number[] | [] {
-  let num_of_pages = 0
+  const numberOfPages = getNumberOfPages(totalUsers)
 
-  if (total_users >= 1000) {
-    num_of_pages = 100 // 100 is the maximum
-  } else {
-    num_of_pages = Math.ceil(total_users / 10) // e.g 853 = 86 pages // 10 users 10 / 10 = 1 // 8 users 8 / 10 = 1 page // one page is the minimum
+  // if num of pages === 1 do not show any pagination(page numbers)
+  if (numberOfPages === 1) {
+    return [] /* empty array -. nothing will be rendered (null) since the condition is the array to have length > 0 */
+  } else if (numberOfPages <= 10) {
+    return range(1, numberOfPages)
   }
 
-  // console.log('num_of_pages start', num_of_pages)
   // if window width is less than 570px we hide the ul element and we show the pagination buttons and input field
 
-  // TODO: DRY
   // if window is between 794 and 570px
-  if (window_width >= 590 && window_width < 795) {
-    if (num_of_pages === 1) {
-      return [] /* empty array -. nothing will be rendered (null) since the condition is the array to have length > 0 */
-    } else if (num_of_pages <= 10) {
-      return range(1, num_of_pages)
-    } else {
-      const first_page = 1
-      const last_page = num_of_pages
+  if (windowWidth >= 590 && windowWidth < 795) {
+    const first_page = 1
+    const last_page = numberOfPages
 
-      if (current_page <= 3) {
-        return [first_page, ...range(2, 5), last_page]
-      }
-
-      if (current_page > num_of_pages - 3) {
-        return [first_page, ...range(96, 99), last_page]
-      }
-
-      // Covering all other cases
-      if (current_page > 3) {
-        return Array.from(
-          new Set([
-            first_page,
-            ...range(current_page - 1, current_page + 1),
-            last_page,
-          ])
-        )
-      }
+    if (currentPage <= 3) {
+      return [first_page, ...range(2, 5), last_page]
     }
-  }
 
-  // if num of pages === 1 do not show any page numbers,
-  if (num_of_pages === 1) {
-    return [] /* empty array -. nothing will be rendered (null) since the condition is the array to have length > 0 */
-  } else if (num_of_pages <= 10) {
-    return range(1, num_of_pages)
+    if (currentPage > numberOfPages - 3) {
+      return [first_page, ...range(last_page - 4, last_page - 1), last_page]
+    }
+
+    // Covering all other cases
+    if (currentPage > 3) {
+      return Array.from(
+        new Set([
+          first_page,
+          ...range(currentPage - 1, currentPage + 1),
+          last_page,
+        ])
+      )
+    }
   } else {
     // get pagesNum and get the first two and the last two numbers
     const first_pages = [1, 2]
-    const last_pages = [num_of_pages - 1, num_of_pages]
+    const last_pages = [numberOfPages - 1, numberOfPages]
     // calculate the rest of the display elements
     // Covering use cases: btn press 1, 2, 3
-    if (current_page <= 3) {
+    if (currentPage <= 3) {
       return [...first_pages, ...range(3, 5), ...last_pages]
     }
     // Covering use cases: btn press 98, 99, 100
-    if (current_page > num_of_pages - 3) {
-      return [...first_pages, ...range(96, 98), ...last_pages]
+    if (currentPage > numberOfPages - 3) {
+      return [
+        ...first_pages,
+        ...range(last_pages[1] - 4, last_pages[1] - 2),
+        ...last_pages,
+      ]
     }
 
     // Covering use cases: btn press 4, 5, 6
-    if (current_page <= 6) {
+    if (currentPage <= 6) {
       return Array.from(
-        new Set([...first_pages, ...range(3, current_page + 2), ...last_pages])
+        new Set([...first_pages, ...range(3, currentPage + 2), ...last_pages])
       )
     }
 
     // Covering use cases: btn press 95, 96, 97
-    if (current_page > num_of_pages - 6) {
-      return Array.from(
-        new Set([...first_pages, ...range(current_page - 2, 98), ...last_pages])
-      )
-    }
-
-    // Covering all other cases
-    if (current_page > 6) {
+    if (currentPage > numberOfPages - 6) {
       return Array.from(
         new Set([
           ...first_pages,
-          ...range(current_page - 2, current_page + 2),
+          ...range(currentPage - 2, last_pages[0] - 1),
           ...last_pages,
         ])
       )
     }
 
-    return [] // to satisfy typescript
+    // Covering all other cases
+    if (currentPage > 6) {
+      return Array.from(
+        new Set([
+          ...first_pages,
+          ...range(currentPage - 2, currentPage + 2),
+          ...last_pages,
+        ])
+      )
+    }
   }
+  return [] // to satisfy typescript
 }
 
 /**
  * isSequence returns an empty array if the array numbers are in a sequence
  * and an array of index(es) if the array numbers are not in a sequence
- * it will contain either one or two maximum index(es)
+ * it will contain either one or two index(es) if used within the context of pagination
  * @param {Array} array_of_numbers
  */
-function isSequence(sequence_array: number[]): number[] | [] {
+function isSequence(sequenceArray: number[]): number[] | [] {
   const index_array = []
-  const prevValue = sequence_array[0]
-  for (let i = 0; i < sequence_array.length - 1; i++) {
-    if (prevValue + sequence_array[i] === sequence_array[i + 1]) {
+  const prevValue = sequenceArray[0]
+  for (let i = 0; i < sequenceArray.length - 1; i++) {
+    if (prevValue + sequenceArray[i] === sequenceArray[i + 1]) {
       continue
     } else index_array.push(i)
   }
@@ -186,20 +192,26 @@ function isSequence(sequence_array: number[]): number[] | [] {
 }
 
 function createNewPagesArray(
-  no_of_pages_array: number[] | [],
-  indexes_array: number[] | []
+  noOfPagesArray: number[] | [],
+  indexesArray: number[] | []
 ): number[] | [] {
   // I put an arbitrary value (-1) in the array as a flag to indicate
   // that a gap (...) should be added instead of the number.
-  const [first_value, second_value] = indexes_array
+  const [first_value, second_value] = indexesArray
   const result_array = []
-  for (let i = 0; i < no_of_pages_array.length; i++) {
+  for (let i = 0; i < noOfPagesArray.length; i++) {
     if (i === first_value || i === second_value) {
-      result_array.push(no_of_pages_array[i])
+      result_array.push(noOfPagesArray[i])
       result_array.push(-1)
-    } else result_array.push(no_of_pages_array[i])
+    } else result_array.push(noOfPagesArray[i])
   }
   return result_array
 }
 
-export { calcNoOfPages, isSequence, createNewPagesArray }
+export {
+  calcNoOfPages,
+  isSequence,
+  createNewPagesArray,
+  range,
+  getNumberOfPages,
+}
