@@ -1,7 +1,7 @@
 import React, { FormEvent } from 'react'
 
 import { MemoizedPageView } from './components/UsersView'
-import { MemoizedPagination } from './components/Pagination'
+import { MemoizedPagination } from './components/pagination/Pagination'
 import { FindUserForm } from './components/FindUserForm'
 import { OutputMessage } from './components/OutputMessage'
 import { TotalUsers } from './components/TotalUsers'
