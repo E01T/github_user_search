@@ -1,10 +1,10 @@
 import React, { FormEvent } from 'react'
 
-import { MemoizedPageView } from './components/UsersView'
-import { MemoizedPagination } from './components/pagination/Pagination'
-import { FindUserForm } from './components/FindUserForm'
-import { OutputMessage } from './components/OutputMessage'
-import { TotalUsers } from './components/TotalUsers'
+import { MemoizedPageView } from './components/UsersView/UsersView'
+import { MemoizedPagination } from './components/pagination/Pagination/Pagination'
+import { FindUserForm } from './components/FindUserForm/FindUserForm'
+import { OutputMessage } from './components/OutputMessage/OutputMessage'
+import { TotalUsers } from './components/TotalUsers/TotalUsers'
 import { user_type, users_type } from './types/user_types'
 
 const getUser = (user: string, signal: AbortSignal) =>

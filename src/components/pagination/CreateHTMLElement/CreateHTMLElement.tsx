@@ -38,13 +38,8 @@ const normalStyle = {
 const isNumberWithinRange =
   (min: number) =>
   (max: number) =>
-  (x: number): boolean => {
-    if (x >= min && x <= max) {
-      return true
-    } else {
-      return false
-    }
-  }
+  (x: number): boolean =>
+    x >= min && x <= max
 
 const isBetween1nd9 = isNumberWithinRange(1)(9)
 
@@ -52,7 +47,11 @@ const pageIsCurrent = (pageNo: number, newPagesArrayIndex: number): boolean =>
   pageNo === newPagesArrayIndex
 
 const isGap = (newPagesArrayIndex: number): boolean => newPagesArrayIndex === -1
-const gap = <span className="gap">…</span>
+const gap = (
+  <span data-testid="pagination-gap" className="gap">
+    …
+  </span>
+)
 
 const chooseStyle = (pageNo: number, newPagesArrayIndex: number) => {
   let btnStyle = {}
@@ -86,6 +85,7 @@ const Button = ({
   children: React.ReactNode
 }) => (
   <button
+    data-testid="pagination-button"
     className="btn btn-outline-primary btn-sm"
     style={style}
     onClick={handleClick}

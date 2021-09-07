@@ -4,18 +4,18 @@ import { ChevronRight } from 'react-bootstrap-icons'
 export const NextPage = ({
   pageNo,
   setPageNo,
-  last_page,
+  lastPage,
 }: {
   pageNo: number
   setPageNo: (pageNo: number) => void
-  last_page: number
+  lastPage: number
 }) => {
   const [disabled, setDisabled] = React.useState(false)
 
   React.useEffect(() => {
-    if (pageNo === last_page) setDisabled(true)
+    if (pageNo === lastPage) setDisabled(true)
     else setDisabled(false)
-  }, [pageNo, last_page])
+  }, [pageNo, lastPage])
 
   return (
     <button

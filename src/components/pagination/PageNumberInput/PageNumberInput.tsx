@@ -1,5 +1,5 @@
 import React, { FormEvent } from 'react'
-import { PageInputForm } from './PageInputForm'
+import { PageInputForm } from '../PageInputForm/PageInputForm'
 
 // Input Field which sets page
 export const PageNumberInput = ({

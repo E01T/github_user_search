@@ -30,6 +30,8 @@ export const FindUserForm = ({
             <Search />
           </span>
           <input
+            aria-label="Search for users"
+            role="search"
             data-testid="search-input"
             id="search"
             className="form-control"

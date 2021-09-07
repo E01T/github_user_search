@@ -10,6 +10,7 @@ export const PageInputForm = ({
 }) => {
   return (
     <form
+      data-testid="form-for-page-number-input"
       id="page-number-input"
       className="d-flex justify-content-center"
       onSubmit={handleSubmit}
@@ -22,6 +23,7 @@ export const PageInputForm = ({
         Page No:
       </label>
       <input
+        data-testid="page-number-input"
         id="page-no"
         autoComplete="off"
         type="text"
@@ -32,6 +34,7 @@ export const PageInputForm = ({
         onChange={handleChange}
       />
       <button
+        data-testid="page-no-submit"
         style={{ display: 'inline' }}
         className="btn btn-outline-primary"
         type="submit"

@@ -13,7 +13,7 @@ export type user_type = {
   events_url: string | null
   followers: number
   followers_url: string | null
-  following: 0
+  following: number
   following_url: string | null
   gists_url: string | null
   gravatar_id: string

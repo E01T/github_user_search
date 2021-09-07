@@ -1,5 +1,5 @@
 import React from 'react'
-import { user_type } from '../types/user_types'
+import { user_type } from '../../types/user_types'
 
 function PageView({
   users,

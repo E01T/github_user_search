@@ -3,12 +3,12 @@ import {
   calcNoOfPages,
   isSequence,
   createNewPagesArray,
-} from '../../utils/utils'
+} from '../pagination_logic/utils'
 import { Info } from 'react-bootstrap-icons'
-import { PreviousPage } from './PreviousPage'
-import { NextPage } from './NextPage'
-import { CreateHTMLElement } from './CreateHTMLElement'
-import { PageNumberInput } from './PageNumberInput'
+import { PreviousPage } from '../PreviousPage/PreviousPage'
+import { NextPage } from '../NextPage/NextPage'
+import { CreateHTMLElement } from '../CreateHTMLElement/CreateHTMLElement'
+import { PageNumberInput } from '../PageNumberInput/PageNumberInput'
 
 function createPagesList(
   newPagesArray: number[],
@@ -34,6 +34,11 @@ function createPagesList(
   return pages
 }
 
+// Linsten to window resizing evt and set window width
+const getWindowSize = (cb: (num: number) => void) => {
+  cb(window.innerWidth)
+}
+
 const Pagination = ({
   totalCount,
   pageNo,
@@ -45,11 +50,6 @@ const Pagination = ({
 }) => {
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth)
 
-  // Linsten to window resizing evt and set window width
-  const getWindowSize = (cb: (num: number) => void) => {
-    cb(window.innerWidth)
-  }
-
   React.useEffect(() => {
     window.addEventListener('resize', () => getWindowSize(setWindowWidth))
     return () =>
@@ -59,7 +59,7 @@ const Pagination = ({
   const noOfPages = calcNoOfPages(totalCount, pageNo, windowWidth)
   const indexes = isSequence(noOfPages)
   const newPagesArray = createNewPagesArray(noOfPages, indexes)
-  const last_page = noOfPages[noOfPages.length - 1]
+  const lastPage = noOfPages[noOfPages.length - 1]
   const pages = createPagesList(newPagesArray, pageNo, setPageNo)
 
   return pages.length > 0 ? (
@@ -79,15 +79,11 @@ const Pagination = ({
             <ul style={{ display: 'inline', padding: '0 5px' }}>{pages}</ul>
           </div>
         ) : (
-          <PageNumberInput lastPage={last_page} setPageNo={setPageNo} />
+          <PageNumberInput lastPage={lastPage} setPageNo={setPageNo} />
         )}
 
         <div id="next-page-comp">
-          <NextPage
-            pageNo={pageNo}
-            setPageNo={setPageNo}
-            last_page={last_page}
-          />
+          <NextPage pageNo={pageNo} setPageNo={setPageNo} lastPage={lastPage} />
         </div>
       </div>
     </>
