@@ -8,7 +8,6 @@ function PageView({
   users: user_type[]
   children: React.ReactNode
 }) {
-  // console.log('PageView')
   const usersProfiles = users.map((user: user_type) => {
     return (
       <div

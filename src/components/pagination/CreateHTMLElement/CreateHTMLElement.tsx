@@ -83,16 +83,18 @@ const Button = ({
   style: object
   handleClick: () => void
   children: React.ReactNode
-}) => (
-  <button
-    data-testid="pagination-button"
-    className="btn btn-outline-primary btn-sm"
-    style={style}
-    onClick={handleClick}
-  >
-    {children}
-  </button>
-)
+}) => {
+  return (
+    <button
+      data-testid="pagination-button"
+      className="btn btn-outline-primary btn-sm"
+      style={style}
+      onClick={handleClick}
+    >
+      {children}
+    </button>
+  )
+}
 
 export const CreateHTMLElement = ({
   pageNo,

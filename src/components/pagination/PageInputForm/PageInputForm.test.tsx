@@ -1,11 +1,12 @@
-import { render, cleanup, fireEvent, waitFor } from '@testing-library/react'
+import { FormEvent } from 'react'
+import { render, cleanup, fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { PageInputForm } from './PageInputForm'
 
 describe('PageInputForm', () => {
   afterEach(cleanup)
 
-  test('It renders PageInputForm component with input value empty, a button with the text "Go" and the # symbol as placeholder', () => {
+  test.skip('It renders PageInputForm component with input value empty, a button with the text "Go" and the # symbol as placeholder', () => {
     const userInput = ''
     const handleChange = jest.fn()
     const handleSubmit = jest.fn()
@@ -28,7 +29,7 @@ describe('PageInputForm', () => {
     expect(placeholder).toBeInTheDocument()
   })
 
-  test('It renders PageInputForm component with input value "1", a button with the text "Go" and the # symbol as placeholder', () => {
+  test.skip('It renders PageInputForm component with input value "1", a button with the text "Go" and the # symbol as placeholder', () => {
     const userInput = '1'
     const handleChange = jest.fn()
     const handleSubmit = jest.fn()
@@ -51,7 +52,7 @@ describe('PageInputForm', () => {
     expect(placeholder).toBeInTheDocument()
   })
 
-  test('It renders PageInputForm component with input value "" and the symbol # as a placeholder. The user enters the value "3"', () => {
+  test.skip('It renders PageInputForm component with input value "" and the symbol # as a placeholder. The user enters the value "3"', () => {
     const userInput = ''
     const handleChange = jest.fn()
     const handleSubmit = jest.fn()
@@ -107,5 +108,38 @@ describe('PageInputForm', () => {
     // fireEvent.change(inputElement, (inputElement.value = ''))
 
     expect(inputElement).toHaveValue('')
+  })
+
+  test('It renders PageInputForm with input value "3". The user clicks the btn and the value "3" becomes empty', async () => {
+    let userInput = '3'
+    // const handleChange = jest.fn()
+    const handleChange = (e: FormEvent<HTMLInputElement>) => {
+      userInput = e.currentTarget.value
+    }
+    // const handleSubmit = jest.fn((e) => e.preventDefault())
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+    }
+
+    const { getByTestId, getByText } = render(
+      <PageInputForm
+        userInput={userInput}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+      />
+    )
+
+    const inputElement = getByTestId('page-number-input')
+    const btnElement = getByText(/Go/i)
+
+    expect(inputElement).toBeInTheDocument()
+    expect(inputElement).toHaveValue('3')
+
+    userEvent.type(inputElement, '{selectall}{backspace}')
+    userEvent.type(inputElement, '')
+
+    userEvent.click(btnElement)
+
+    expect(userInput).toEqual('')
   })
 }) // END OF describe('PageInputForm')

@@ -1,6 +1,6 @@
 import { render, screen, cleanup } from '@testing-library/react'
 import { MemoizedPageView } from './UsersView'
-import mockUsers from '../../mock_data/users.json'
+import mockUsers from '../../mock_data/users_10.json'
 
 const users = mockUsers.users
 

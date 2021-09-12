@@ -19,8 +19,9 @@ const searchGithubApi = (
   userName: string,
   pageNo: number = 1,
   signal: AbortSignal
-) =>
-  fetch(
+) => {
+  console.log('userName', userName)
+  return fetch(
     `https://api.github.com/search/users?q=${userName}&type=users&per_page=10&page=${pageNo}`,
     {
       headers: {
@@ -29,6 +30,7 @@ const searchGithubApi = (
       signal,
     }
   ).then((res) => res.json())
+}
 
 function App() {
   const [users, setUsers] = React.useState<users_type>({
@@ -58,13 +60,16 @@ function App() {
           return // exit
         }
 
+        // console.log('users in App.tsx', users)
+        // console.log('users.items in App.tsx', users.items)
+
         const userPromises = users.items.map((user: user_type) => {
-          // console.log('user', user)
+          // console.log('user in userPromises map', user)
           return getUser(user.login, signal)
         })
 
         Promise.all<user_type>(userPromises).then((users) => {
-          // console.log('users', users)
+          // console.log('users in Promise.all', users)
           setUsers({ items: users, total_count: total_count })
           topRef?.current?.scrollIntoView({ behavior: 'smooth' })
         })

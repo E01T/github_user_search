@@ -91,7 +91,7 @@ function calcNoOfPages(
   windowWidth: number
 ): number[] | [] {
   const numberOfPages = getNumberOfPages(totalUsers)
-
+  console.log('windowWidth', windowWidth)
   // if num of pages === 1 do not show any pagination(page numbers)
   if (numberOfPages === 1) {
     return [] /* empty array -. nothing will be rendered (null) since the condition is the array to have length > 0 */
