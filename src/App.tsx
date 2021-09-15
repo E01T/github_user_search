@@ -20,7 +20,6 @@ const searchGithubApi = (
   pageNo: number = 1,
   signal: AbortSignal
 ) => {
-  console.log('userName', userName)
   return fetch(
     `https://api.github.com/search/users?q=${userName}&type=users&per_page=10&page=${pageNo}`,
     {
@@ -53,28 +52,30 @@ function App() {
 
     searchGithubApi(userInput, pageNo, signal).then(
       (users) => {
-        const total_count: number = users.total_count
+        // tests the server error (500)
+        if (users.message) {
+          setOutputMessage(users.message)
+          return
+        }
 
+        const total_count: number = users.total_count
         if (total_count === 0) {
           setOutputMessage('No users found')
           return // exit
         }
 
-        // console.log('users in App.tsx', users)
-        // console.log('users.items in App.tsx', users.items)
-
         const userPromises = users.items.map((user: user_type) => {
-          // console.log('user in userPromises map', user)
           return getUser(user.login, signal)
         })
 
         Promise.all<user_type>(userPromises).then((users) => {
-          // console.log('users in Promise.all', users)
           setUsers({ items: users, total_count: total_count })
           topRef?.current?.scrollIntoView({ behavior: 'smooth' })
         })
       },
-      (err) => console.error(err)
+      (err) => {
+        setOutputMessage(err.message)
+      }
     )
 
     return () => abortCtrl.abort()
@@ -95,7 +96,6 @@ function App() {
     setInputValue(value)
   }
 
-  // console.log('users', users)
   return (
     <div ref={topRef} className="container-lg" style={{ margin: '0px auto' }}>
       <div className="container-lg">

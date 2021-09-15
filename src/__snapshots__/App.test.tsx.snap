@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App makes 1 http requests when the user clicks the submit btn, searching for uses with the name "lX0?qB1&pI6)jS4*": No users found 1`] = `"No users found"`;
